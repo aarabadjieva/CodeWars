@@ -1,5 +1,5 @@
 import java.util.Arrays;
-import java.util.List;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -19,25 +19,15 @@ Examples:
 public class YourOrder {
 
     public static void main(String[] args) {
-        while (true) {
             Scanner scanner = new Scanner(System.in);
             String words = scanner.nextLine();
             System.out.println(order(words));
-        }
     }
 
     public static String order(String words) {
-        List<String> allWords = Arrays.stream(words.split(" ")).collect(Collectors.toList());
-        String[] ordered = new String[allWords.size()];
-        for (String current : allWords) {
-            for (int j = 0; j < current.length(); j++) {
-                if (Character.isDigit(current.charAt(j))) {
-                    int position = Integer.parseInt(String.valueOf(current.charAt(j))) - 1;
-                    ordered[position] = current;
-                    break;
-                }
-            }
-        }
-        return String.join(" ", ordered);
+        return Arrays.stream(words.split(" "))
+                .sorted(Comparator.comparing(w-> Integer.valueOf(w.replaceAll("\\D", ""))))
+                .collect(Collectors.joining(" "));
+
     }
 }
